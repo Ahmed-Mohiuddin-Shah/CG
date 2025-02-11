@@ -36,7 +36,6 @@ void drawStarPolygonal(float cx, float cy, float radius)
         points[i][0] = cx + r * cos(i * angleStep * 2 - PI / 2); // Adjusted angle for correct orientation
         points[i][1] = cy + r * sin(i * angleStep * 2 - PI / 2);
     }
-
     // Correct star connections (every second point)
     for (int i = 0; i < 10; i++)
     {
