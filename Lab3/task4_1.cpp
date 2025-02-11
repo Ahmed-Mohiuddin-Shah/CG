@@ -67,7 +67,7 @@ int main(int argc, char **argv)
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
     glutInitWindowSize(500, 500); // Here we set the window size
-    glutCreateWindow("Task 2");
+    glutCreateWindow("Task 4.1");
     glClearColor(0.0f, 0.0f, 0.05f, 1.0f); // Set background color to black
     glMatrixMode(GL_PROJECTION);           // Switch to projection matrix
     glLoadIdentity();                      // Reset the matrix
