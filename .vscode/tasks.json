@@ -8,11 +8,17 @@
       "args": [
         "-g",
         "${file}",
+        "C:/tools/w64devkit/x86_64-w64-mingw32/lib/glad.o",
         "-o",
         "${fileDirname}/${fileBasenameNoExtension}.exe",
+        "-I",
+        "C:/tools/w64devkit/x86_64-w64-mingw32/include",
+        "-L",
+        "C:/tools/w64devkit/x86_64-w64-mingw32/lib",
         "-lfreeglut",
+        "-lglfw3",
         "-lopengl32",
-        "-lglu32"
+        "-lgdi32"
       ],
       "group": {
         "kind": "build",
@@ -27,11 +33,17 @@
       "args": [
         "-O2",
         "${file}",
+        "C:/tools/w64devkit/x86_64-w64-mingw32/lib/glad.o",
         "-o",
         "${fileDirname}/${fileBasenameNoExtension}_release.exe",
+        "-I",
+        "C:/tools/w64devkit/x86_64-w64-mingw32/include",
+        "-L",
+        "C:/tools/w64devkit/x86_64-w64-mingw32/lib",
         "-lfreeglut",
+        "-lglfw3",
         "-lopengl32",
-        "-lglu32"
+        "-lgdi32"
       ],
       "group": {
         "kind": "build",
