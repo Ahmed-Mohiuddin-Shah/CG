@@ -18,7 +18,8 @@
         "-lfreeglut",
         "-lglfw3",
         "-lopengl32",
-        "-lgdi32"
+        "-lgdi32",
+        "-lglew32"
       ],
       "group": {
         "kind": "build",
@@ -43,7 +44,8 @@
         "-lfreeglut",
         "-lglfw3",
         "-lopengl32",
-        "-lgdi32"
+        "-lgdi32",
+        "-lglew32"
       ],
       "group": {
         "kind": "build",
