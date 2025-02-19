@@ -4,3 +4,5 @@ build
 ~$*
 .vs
 .vscode
+lab*/lab*/**
+lab*/x64/**
