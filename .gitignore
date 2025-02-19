@@ -2,3 +2,5 @@ build
 *.exe
 *.zip
 ~$*
+.vs
+.vscode
