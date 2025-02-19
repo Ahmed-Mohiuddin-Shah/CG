@@ -1,5 +1,6 @@
 #include <GL/glut.h>
-void drawLine(int x1, int y1, int x2, int y2)
+
+void drawBmanLine(int x1, int y1, int x2, int y2)
 {
     int dx = abs(x2 - x1), dy = abs(y2 - y1);
     int sx = (x1 < x2) ? 1 : -1;
@@ -25,11 +26,11 @@ void drawLine(int x1, int y1, int x2, int y2)
     glFlush();
 }
 
-void display()
+void display_bman()
 {
     glClear(GL_COLOR_BUFFER_BIT);
     glColor3f(0.0f, 1.0f, 0.0f);  // Set Line Color to green
-    drawLine(200, 250, 400, 300); // Draw a line from (100, 100) to (400, 300)
+    drawBmanLine(200, 250, 400, 300); // Draw a line from (100, 100) to (400, 300)
 }
 
 int main(int argc, char **argv)
@@ -42,7 +43,7 @@ int main(int argc, char **argv)
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluOrtho2D(0.0, 500.0, 0.0, 500.0);
-    glutDisplayFunc(display);
+    glutDisplayFunc(display_bman);
     glutMainLoop();
     return 0;
 }
