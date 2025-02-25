@@ -6,3 +6,5 @@ build
 .vscode
 lab*/lab*/**
 lab*/x64/**
+Assignment*/Assignment*/**
+Assignment*/x64/**
