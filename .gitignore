@@ -2,6 +2,7 @@ build
 *.exe
 *.zip
 ~$*
+~*.tmp
 .vs
 .vscode
 lab*/lab*/**
