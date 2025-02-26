@@ -103,3 +103,27 @@ public:
 
    Light(const Vector3& position, const Vector3& intensity) : position(position), intensity(intensity) {}
 };
+
+// Function to handle keyboard input
+void processInput(GLFWwindow* window, Light& light) {
+    float moveSpeed = 1.0f; // Speed of light movement
+
+    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+        light.position.y += moveSpeed; // Move light up
+    }
+    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+        light.position.y -= moveSpeed; // Move light down
+    }
+    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+        light.position.x -= moveSpeed; // Move light left
+    }
+    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+        light.position.x += moveSpeed; // Move light right
+    }
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+        light.position.z -= moveSpeed; // Move light forward
+    }
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+        light.position.z += moveSpeed; // Move light backward
+    }
+}

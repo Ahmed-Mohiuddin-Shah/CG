@@ -145,7 +145,7 @@ void renderPhongRayCastScene(const std::vector<Sphere>& spheres, const std::vect
    Vector3 cameraPosition(0.0f, 0.0f, 0.0f);
 
    // Loop through each pixel on the screen
-   for (int y = 0; y < HEIGHT; ++y) {
+   for (int y = HEIGHT - 1; y >= 0; --y) { // Start from HEIGHT-1 and go to 0
        for (int x = 0; x < WIDTH; ++x) {
            // Convert pixel coordinates to normalized device coordinates (-1 to 1)
            float ndcX = (2.0f * x) / WIDTH - 1.0f;
@@ -190,9 +190,87 @@ void renderPhongRayCastScene(const std::vector<Sphere>& spheres, const std::vect
 
            // Set pixel color
            glColor3f(color.x, color.y, color.z);
-           glVertex2f((float)x / WIDTH, (float)y / HEIGHT);
+           glVertex2f((float)x / WIDTH, (float)(HEIGHT - 1 - y) / HEIGHT); // Flip Y-axis here
        }
    }
 
    glEnd();
+}
+
+// Function to compute Lambertian reflection
+Vector3 lambertianReflection(const Vector3& point, const Vector3& normal, const Light& light, const Vector3& kd) {
+    // Light direction
+    Vector3 lightDir = (light.position - point).normalize();
+
+    // Diffuse component
+    float diff = std::max(normal.dot(lightDir), 0.0f);
+    Vector3 diffuse = light.intensity * kd * diff;
+
+    return diffuse;
+}
+
+// Function to render the scene using ray casting and Phong shading with Lambertian reflection
+void renderPhongLambertianRayCastScene(const std::vector<Sphere>& spheres, const std::vector<Plane>& planes, const Light& light) {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glBegin(GL_POINTS);
+
+    // Virtual camera position
+    Vector3 cameraPosition(0.0f, 0.0f, 0.0f);
+
+    // Loop through each pixel on the screen
+    for (int y = HEIGHT - 1; y >= 0; --y) { // Start from HEIGHT-1 and go to 0
+        for (int x = 0; x < WIDTH; ++x) {
+            // Convert pixel coordinates to normalized device coordinates (-1 to 1)
+            float ndcX = (2.0f * x) / WIDTH - 1.0f;
+            float ndcY = 1.0f - (2.0f * y) / HEIGHT;
+
+            // Create a ray from the camera through the pixel
+            Vector3 rayDirection(ndcX, ndcY, -1.0f); // Assume the image plane is at z = -1
+            Ray ray(cameraPosition, rayDirection);
+
+            // Variables to store intersection details
+            float t;
+            Vector3 color(0.0f, 0.0f, 0.0f); // Default color (black)
+            bool hit = false;
+
+            // Check for intersections with planes
+            for (const auto& plane : planes) {
+                if (plane.intersect(ray, t)) {
+                    Vector3 point = ray.origin + ray.direction * t;
+                    Vector3 normal = plane.getNormal();
+                    Vector3 viewDir = (cameraPosition - point).normalize();
+
+                    // Apply Phong shading
+                    Vector3 phongColor = phongShading(point, normal, viewDir, light, Vector3(0.2f, 0.8f, 0.2f), Vector3(1.0f, 1.0f, 1.0f), 32.0f);
+                    // Apply Lambertian reflection
+                    Vector3 lambertianColor = lambertianReflection(point, normal, light, Vector3(0.2f, 0.8f, 0.2f));
+                    color = phongColor + lambertianColor;
+                    hit = true;
+                    break;
+                }
+            }
+            // Check for intersections with spheres
+            for (const auto& sphere : spheres) {
+                if (sphere.intersect(ray, t)) {
+                    Vector3 point = ray.origin + ray.direction * t;
+                    Vector3 normal = sphere.getNormal(point);
+                    Vector3 viewDir = (cameraPosition - point).normalize();
+
+                    // Apply Phong shading
+                    Vector3 phongColor = phongShading(point, normal, viewDir, light, Vector3(0.8f, 0.2f, 0.2f), Vector3(1.0f, 1.0f, 1.0f), 32.0f);
+                    // Apply Lambertian reflection
+                    Vector3 lambertianColor = lambertianReflection(point, normal, light, Vector3(0.8f, 0.2f, 0.2f));
+                    color = phongColor + lambertianColor;
+                    hit = true;
+                    break;
+                }
+            }
+
+            // Set pixel color
+            glColor3f(color.x, color.y, color.z);
+            glVertex2f((float)x / WIDTH, (float)(HEIGHT - 1 - y) / HEIGHT); // Flip Y-axis here
+        }
+    }
+
+    glEnd();
 }

@@ -1,4 +1,3 @@
-#include "shapes.h"
 #include "helpers.h"
 
 int main() {
@@ -18,7 +17,10 @@ int main() {
   Light light(Vector3(2.0f, 5.0f, 0.0f), Vector3(1.0f, 1.0f, 1.0f));
 
   while (!glfwWindowShouldClose(window)) {
-      renderPhongRayCastScene(spheres, planes, light);
+      // Function to handle keyboard input
+      processInput(window, light);
+	  std::cout << "Light position: " << light.position.x << std::endl;
+      renderPhongLambertianRayCastScene(spheres, planes, light);
       glfwSwapBuffers(window);
       glfwPollEvents();
   }
