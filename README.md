@@ -1,4 +1,4 @@
-# Computer Graphics Project Checklist
+# Computer Graphics Course Outline Checklist
 
 ## Week 1: Introduction to Computer Graphics
 - [x] Overview and Applications of Computer Graphics
