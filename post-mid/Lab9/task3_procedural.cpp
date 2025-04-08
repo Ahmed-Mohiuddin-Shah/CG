@@ -13,7 +13,7 @@ void init()
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_DEPTH_TEST);
 
-    car.loadModel("car", "./", true);
+    car.loadModel("plane", "./", true);
 }
 
 void display()

@@ -128,18 +128,6 @@ int main(int argc, char **argv)
 
     init();
 
-    // carRotationAngle = 90.0f;
-    // carRotationAxis = glm::vec3(1.0f, 1.0f, 0.0f);
-    // // Update the model with the new translation and rotation
-    // model.translateModel(carTranslation);
-    // model.rotateModel(carRotationAngle, carRotationAxis);
-    // model.scaleModel(glm::vec3(0.5f, 0.5f, 0.5f));
-
-    // carRotationAngle = 45.0f;
-    // carRotationAxis = glm::vec3(0.0f, 1.0f, 0.0f);
-    // model.translateModel(carTranslation);
-    // model.rotateModel(carRotationAngle, carRotationAxis);
-
     carTranslation = glm::vec3(0.0f, 0.0f, 0.0f);
     carRotationAngle = 0.0f;
 
