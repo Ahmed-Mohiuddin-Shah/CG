@@ -1,11 +1,11 @@
 #include "./helpers.h"
 #include "zynmodel.h"
 
-ZModel car;
+ZModel model;
 
 glm::vec3 carTranslation(0.0f, 0.0f, 0.0f);
-float carRotationAngle = 0.0f;
-glm::vec3 carRotationAxis(0.0f, 1.0f, 0.0f);
+float carRotationAngle = 90.0f;
+glm::vec3 carRotationAxis(1.0f, 0.0f, 0.0f);
 
 void init()
 {
@@ -13,7 +13,11 @@ void init()
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_DEPTH_TEST);
 
-    car.loadModel("car", "./");
+    model.loadModel("plane", "./");
+    for (int i = 1; i <= 14; i++)
+    {
+        model.loadModelTexture(("./anim/" + std::to_string(i) + ".png").c_str());
+    }
 }
 
 void display()
@@ -27,7 +31,19 @@ void display()
     gluOrtho2D(-1.0, 1.0, -1.0, 1.0);
     glMatrixMode(GL_MODELVIEW);
 
-    car.drawModel();
+    // model.drawModel(0);
+    static int frame = 1;
+    static int lastTime = glutGet(GLUT_ELAPSED_TIME);
+    int currentTime = glutGet(GLUT_ELAPSED_TIME);
+    int elapsedTime = currentTime - lastTime;
+
+    if (elapsedTime > 1000 / 15)
+    {                             // 30 FPS
+        frame = (frame % 14) + 1; // Cycle through frames 1 to 14
+        lastTime = currentTime;
+    }
+
+    model.drawModel(frame);
 
     glutSwapBuffers();
 }
@@ -76,8 +92,8 @@ void keyboardFunction(unsigned char key, int x, int y)
         break;
     }
     // Update the model with the new translation and rotation
-    car.translateModel(carTranslation);
-    car.rotateModel(carRotationAngle, carRotationAxis);
+    model.translateModel(carTranslation);
+    model.rotateModel(carRotationAngle, carRotationAxis);
     // reset the car translation and rotation
     carTranslation = glm::vec3(0.0f, 0.0f, 0.0f);
     carRotationAngle = 0.0f;
@@ -95,8 +111,8 @@ void mouseFunction(int button, int state, int x, int y)
     }
 
     // Update the model with the new translation and rotation
-    car.translateModel(carTranslation);
-    car.rotateModel(carRotationAngle, carRotationAxis);
+    model.translateModel(carTranslation);
+    model.rotateModel(carRotationAngle, carRotationAxis);
     // reset the car translation and rotation
     carTranslation = glm::vec3(0.0f, 0.0f, 0.0f);
     carRotationAngle = 0.0f;
@@ -108,15 +124,30 @@ int main(int argc, char **argv)
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(800, 600);
-    glutCreateWindow("Task 2 - Texture Mapping on 3D Objects");
+    glutCreateWindow("Task 3 - Animation using textures");
 
     init();
+
+    // carRotationAngle = 90.0f;
+    // carRotationAxis = glm::vec3(1.0f, 1.0f, 0.0f);
+    // // Update the model with the new translation and rotation
+    // model.translateModel(carTranslation);
+    // model.rotateModel(carRotationAngle, carRotationAxis);
+    // model.scaleModel(glm::vec3(0.5f, 0.5f, 0.5f));
+
+    // carRotationAngle = 45.0f;
+    // carRotationAxis = glm::vec3(0.0f, 1.0f, 0.0f);
+    // model.translateModel(carTranslation);
+    // model.rotateModel(carRotationAngle, carRotationAxis);
+
+    carTranslation = glm::vec3(0.0f, 0.0f, 0.0f);
+    carRotationAngle = 0.0f;
 
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
     glutKeyboardFunc(keyboardFunction);
     glutMouseFunc(mouseFunction);
-
+    glutIdleFunc(display);
     glutMainLoop();
     return 0;
 }

@@ -13,7 +13,7 @@ void init()
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_DEPTH_TEST);
 
-    car.loadModel("car", "./");
+    car.loadModel("car", "./", true);
 }
 
 void display()
@@ -108,7 +108,7 @@ int main(int argc, char **argv)
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(800, 600);
-    glutCreateWindow("Task 2 - Texture Mapping on 3D Objects");
+    glutCreateWindow("Task 3 - Procedural Texture");    
 
     init();
 

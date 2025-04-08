@@ -6,6 +6,7 @@ ZModel car;
 glm::vec3 carTranslation(0.0f, 0.0f, 0.0f);
 float carRotationAngle = 0.0f;
 glm::vec3 carRotationAxis(0.0f, 1.0f, 0.0f);
+int carTextureIndex = 0;
 
 void init()
 {
@@ -13,7 +14,8 @@ void init()
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_DEPTH_TEST);
 
-    car.loadModel("car", "./", true);
+    car.loadModel("car", "./");
+    car.loadModelTexture("./car_another_diffuse.png");
 }
 
 void display()
@@ -27,7 +29,7 @@ void display()
     gluOrtho2D(-1.0, 1.0, -1.0, 1.0);
     glMatrixMode(GL_MODELVIEW);
 
-    car.drawModel();
+    car.drawModel(carTextureIndex);
 
     glutSwapBuffers();
 }
@@ -72,6 +74,12 @@ void keyboardFunction(unsigned char key, int x, int y)
     case 'y':
         carRotationAxis = glm::vec3(0.0f, 0.0f, 1.0f);
         break;
+    case '1':
+        carTextureIndex = 0;
+        break;
+    case '2':
+        carTextureIndex = 1;
+        break;
     default:
         break;
     }
@@ -108,7 +116,7 @@ int main(int argc, char **argv)
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(800, 600);
-    glutCreateWindow("Task 1: Dsplaying Texture");
+    glutCreateWindow("Task 3 - Multiple Textures");
 
     init();
 

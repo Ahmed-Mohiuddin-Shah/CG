@@ -96,7 +96,7 @@ struct ZModel
     ZMesh mesh;
 
     // Texture variables
-    GLuint textureID;
+    std::vector<GLuint> textureIDs;
     int texWidth, texHeight, texChannels;
 
     void loadModelTexture(const char *filename)
@@ -111,6 +111,7 @@ struct ZModel
         }
 
         // Create and bind texture
+        GLuint textureID;
         glGenTextures(1, &textureID);
         glBindTexture(GL_TEXTURE_2D, textureID);
 
@@ -126,6 +127,9 @@ struct ZModel
 
         // Free image data
         stbi_image_free(data);
+
+        // Store texture ID
+        textureIDs.push_back(textureID);
     }
 
     bool loadModel(const char *modelName, const char *path, bool procedural = false)
@@ -139,15 +143,14 @@ struct ZModel
         }
         else
         {
-            fullPath.append("/");
+            fullPath.append(path);
             fullPath.append(modelName);
-            fullPath.append(".png");
+            fullPath.append("_diffuse.png");
             loadModelTexture(fullPath.c_str()); // Load the texture
         }
 
         fullPath.clear();
         fullPath.append(path);
-        fullPath.append("/");
         fullPath.append(modelName);
         fullPath.append(".obj");
         if (!mesh.loadFromObjectFile(fullPath.c_str()))
@@ -157,9 +160,15 @@ struct ZModel
         return true;
     }
 
-    void drawModel()
+    void drawModel(int textureIndex = 0)
     {
-        glBindTexture(GL_TEXTURE_2D, textureID);
+        if (textureIndex < 0 || textureIndex >= textureIDs.size())
+        {
+            printf("Invalid texture index\n");
+            return;
+        }
+
+        glBindTexture(GL_TEXTURE_2D, textureIDs[textureIndex]);
         glBegin(GL_TRIANGLES);
 
         for (const auto &tri : mesh.tris)
@@ -200,6 +209,17 @@ struct ZModel
         }
     }
 
+    void scaleModel(const glm::vec3 &scaleFactors)
+    {
+        for (auto &tri : mesh.tris)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                tri.v[i] *= scaleFactors;
+            }
+        }
+    }
+
     void generateProceduralTexture(int width, int height)
     {
         std::vector<unsigned char> textureData(width * height * 3);
@@ -219,6 +239,7 @@ struct ZModel
         }
 
         // Create and bind texture
+        GLuint textureID;
         glGenTextures(1, &textureID);
         glBindTexture(GL_TEXTURE_2D, textureID);
 
@@ -232,6 +253,9 @@ struct ZModel
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, textureData.data());
 
         glBindTexture(GL_TEXTURE_2D, 0);
+
+        // Store texture ID
+        textureIDs.push_back(textureID);
     }
 };
 
