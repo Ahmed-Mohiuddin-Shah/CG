@@ -65,6 +65,40 @@
       },
       "dependsOn": "Build OpenGL Program (Debug)",
       "problemMatcher": []
+    },
+    {
+      "label": "Build raylib Program (Debug)",
+      "type": "shell",
+      "command": "g++",
+      "args": [
+        "-g",
+        "${file}",
+        "-o",
+        "${fileDirname}/${fileBasenameNoExtension}.exe",
+        "-I",
+        "C:/raylib/src",
+        "-L",
+        "C:/raylib/src",
+        "-lraylib",
+        "-lgdi32",
+        "-lwinmm"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": ["$gcc"]
+    },
+    {
+      "label": "Run raylib Program",
+      "type": "shell",
+      "command": "${fileDirname}/${fileBasenameNoExtension}.exe",
+      "group": {
+        "kind": "test",
+        "isDefault": false
+      },
+      "dependsOn": "Build raylib Program (Debug)",
+      "problemMatcher": []
     }
   ]
 }
