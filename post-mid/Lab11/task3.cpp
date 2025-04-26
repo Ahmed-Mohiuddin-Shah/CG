@@ -188,7 +188,7 @@ int main()
     std::vector<Photon> photons;
     std::vector<Photon> absorbedPhotons;
 
-    absorbedPhotons.reserve(100000);
+    absorbedPhotons.reserve(10000000);
 
     // Seed random number generator
     std::srand(std::time(nullptr));
@@ -196,7 +196,7 @@ int main()
     // Emit photons
     for (Vector3 lightSource : lightSources)
     {
-        for (int i = 0; i < 5000; i++)
+        for (int i = 0; i < 10000; i++)
         {
             Photon photon;
             photon.position = lightSource;
@@ -212,7 +212,7 @@ int main()
         }
     }
 
-    const int maxDepth = 2; // Maximum reflection depth
+    const int maxDepth = 10; // Maximum reflection depth
 
     Camera3D camera;
     camera.position = {0.0f, 5.0f, 10.0f};
@@ -271,14 +271,22 @@ int main()
         EndMode3D();
         EndDrawing();
 
-        char filename[150];
-        time_t now = time(nullptr);
-        snprintf(filename, sizeof(filename), "./snapshots/screenshot_absorbed_%zu.png", absorbedPhotons.size());
-        TakeScreenshot(filename);
+        // char filename[150];
+        // time_t now = time(nullptr);
+        // snprintf(filename, sizeof(filename), "./snapshots/screenshot_absorbed_%zu.png", absorbedPhotons.size());
+        // TakeScreenshot(filename);
     }
+
+    float radius = 0.02f;
 
     while (!IsKeyPressed(KEY_TWO))
     {
+
+        if (IsKeyDown(KEY_UP))
+            radius -= 0.01f;
+        if (IsKeyDown(KEY_DOWN))
+            radius += 0.01f;
+
         UpdateCamera(&camera, CAMERA_FIRST_PERSON);
 
         BeginDrawing();
@@ -302,7 +310,7 @@ int main()
         // Draw the absorbed photons
         for (auto &photon : absorbedPhotons)
         {
-            DrawModel(ballModel, photon.position, photon.radius, photon.color);
+            DrawModel(ballModel, photon.position, radius, photon.color);
         }
 
         EndMode3D();
