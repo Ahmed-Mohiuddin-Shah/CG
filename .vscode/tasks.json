@@ -80,8 +80,6 @@
         "-L",
         "C:/raylib/src",
         "-lraylib",
-        "-lgdi32",
-        "-lwinmm"
       ],
       "group": {
         "kind": "build",
